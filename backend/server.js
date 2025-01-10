@@ -7,9 +7,17 @@ const { query } = require('./db');
 const app = express();
 const cors = require('cors');
 
+const allowedOrigins = ['http://localhost:5175', 'http://10.3.202.11:5175'];
 
 app.use(cors({
-    origin: 'http://localhost:5173', // Front-end URL
+    origin: (origin, callback) => {
+        // Vérifie si l'origine de la requête est dans la liste
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Non autorisé par CORS'));
+        }
+    }, // Front-end URL
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));

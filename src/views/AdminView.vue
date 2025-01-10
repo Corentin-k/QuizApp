@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="adminView">
     <h1>Quiz Admin</h1>
     <div>
       <h2>Create User</h2>
@@ -61,14 +61,10 @@ body {
   font-family: Arial, sans-serif;
 }
 
-h1, h2 {
-  color: #333;
-}
 
 button {
   padding: 8px 16px;
   background-color: #4CAF50;
-  color: white;
   border: none;
   cursor: pointer;
 }
@@ -93,5 +89,11 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+#adminView{
+
+  padding: 20px;
+  border: 4px solid red;
+  border-radius: 20px;
 }
 </style>

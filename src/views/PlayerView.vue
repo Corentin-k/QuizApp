@@ -43,7 +43,6 @@
 <style scoped>
 h1 {
   font-size: 2em;
-  color: #333;
 }
 
 p {

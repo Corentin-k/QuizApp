@@ -1,18 +1,17 @@
 {
   "name": "quiz",
-  "private": true,
   "version": "0.0.0",
-  "type": "commonjs",
+  "private": true,
   "scripts": {
-    "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "docs:dev": "vitepress dev docs",
+    "deploy": "vitepress build docs && gh-pages -d docs/.vitepress/dist",
+    "dev": "vite --port 5175",
     "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:dev": "vitepress dev docs",
+    "docs:preview": "vitepress preview docs",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@docsearch/js": "^3.8.2",
     "axios": "^1.7.9",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
@@ -30,7 +29,14 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
+    "@vuedoc/md": "^4.0.0-beta8",
+    "@vuedoc/parser": "^4.0.0-beta14",
+    "gh-pages": "^6.3.0",
     "vite": "^6.0.5",
-    "vitepress": "^1.5.0"
-  }
+    "vitepress": "^1.5.0",
+    "vue-cli-plugin-styleguidist": "~4.72.4",
+    "vue-styleguidist": "^4.72.4",
+    "webpack": "^4.47.0"
+  },
+  "type": "commonjs"
 }
