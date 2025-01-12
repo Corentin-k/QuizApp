@@ -7935,7 +7935,7 @@ function baseCreateRenderer(options, createHydrationFns) {
       // when v-once is used inside a block, setBlockTracking(-1) marks the
       // parent block with hasOnce: true
       // so that it doesn't take the fast path during unmount - otherwise
-      // views nested in v-once are never unmounted.
+      // components nested in v-once are never unmounted.
       !dynamicChildren.hasOnce && // #1153: fast path should not be taken for non-stable (v-for) fragments
       (type !== Fragment || patchFlag > 0 && patchFlag & 64)) {
         unmountChildren(

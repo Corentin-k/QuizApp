@@ -1,21 +1,23 @@
 <template>
     <div>
-      <h1>{{ user.name }}</h1>
-      <p>Score: {{ user.score }}</p>
-      <button @click="incrementScore" >+</button>
+      <h1>{{ user.name }} {{user.id}}</h1>
+
+      <div id="question">
+        <question-section />
+      </div>
     </div>
 
   </template>
 
     <script>
-      import { useUserStore } from '../store';
+      import { useUserStore } from '../store/store';
+      import questionSection from "../components/questionSection.vue";
 
       export default {
-        data() {
-          return {
-            loading: false,
-          };
-        },
+        components: {
+          questionSection,
+      },
+
         computed: {
           user() {
             const userId = this.$route.params.id;
@@ -30,13 +32,8 @@
             userStore.fetchUsers();
           }
         },
-        methods: {
-          async incrementScore() {
 
-              const userStore = useUserStore();
-              await userStore.incrementScore(this.user.id);
-          },
-        },
+
       };
     </script>
 
@@ -56,5 +53,17 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+#question {
+  flex: 2; /* La section des questions occupe plus d'espace */
+  min-width: 700px;
+  min-height: 500px;
+  padding: 20px;
+  background-color: #333; /* Fond sombre */
+  border: 4px solid red;
+  border-radius: 20px;
+
+  text-align: center;
 }
 </style>

@@ -2,12 +2,15 @@ const express = require('express');
 const WebSocket = require('ws');
 const uuid = require('uuid');
 const { query } = require('./db');
-
+require('dotenv').config()
 
 const app = express();
 const cors = require('cors');
+const dbPort = process.env.PORT_DB; // Database port
+const wsPort = process.env.PORT_WS;   // WebSocket Server port
+const frontPort = process.env.PORT_FRONTEND
 
-const allowedOrigins = ['http://localhost:5175', 'http://10.3.202.11:5175'];
+const allowedOrigins = [`http://localhost:${frontPort}`, `https://10.3.202.11:${frontPort}`];
 
 app.use(cors({
     origin: (origin, callback) => {
@@ -24,14 +27,13 @@ app.use(cors({
 app.use(express.json());
 
 console.log('Starting server...');
-const httpPort = 8081; // Database port
-const wsPort = 8082;   // WebSocket Server port
+
 
 
 let connectedClients = [];
 
-const server = app.listen(httpPort, () => {
-    console.log(`HTTP Server running on port ${httpPort}`);
+const server = app.listen(dbPort, () => {
+    console.log(`HTTP Server running on port ${dbPort}`);
 });
 
 // WebSocket Server
@@ -72,7 +74,7 @@ app.post('/users', async (req, res) => {
     }
 
     const userId = uuid.v4();
-    const link = `http://localhost:8081/player/${userId}`; // Correction du port ici
+    const link = `http://localhost:${dbPort}/player/${userId}`;
 
     try {
         await query('INSERT INTO users (id, name, link, score) VALUES (?, ?, ?, 0)', [userId, name, link]);
