@@ -37,7 +37,7 @@ features:
 
 # Welcome to Quiz App
 
-![Main Page Image](admin-view.png)
+![Main Page Image](/admin-view.png)
 
 
 > Explore the [API documentation](/guide/api) or get started with the [configuration guide](/guide/configuration).
