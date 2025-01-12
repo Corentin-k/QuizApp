@@ -37,7 +37,8 @@ h1 {
   translate: -50%;
   background-color: #242424;
   width: 100%;
-  margin-top: 0px;
+  margin-top: 0;
+  padding: 10px;
 }
 
 
@@ -61,13 +62,13 @@ h1 {
 
 }
 
-/* Style de la section des questions */
+
 #question {
-  flex: 2; /* La section des questions occupe plus d'espace */
+  flex: 2;
   min-width: 700px;
   min-height: 500px;
   padding: 20px;
-  background-color: #333; /* Fond sombre */
+  background-color: #333;
   border: 4px solid red;
   border-radius: 20px;
 
@@ -85,11 +86,40 @@ h1 {
   #tabUsers,
   #question {
     max-width: none;
-    min-width: auto;
+
   }
   #tabUsers{
     margin: 0;
   }
+  #question{
+    min-width: 500px;
+  }
 
 }
+@media (max-width: 480px) {
+  h1 {
+    font-size: 20px; /* Réduction de la taille du texte */
+    padding: 15px 0;
+  }
+  h2{
+    font-size:15px;
+  }
+  .layout{
+    width: auto;
+    align-items: baseline;
+  }
+
+  #tabUsers,
+  #question {
+    width:auto;
+
+    padding: 10px;
+  }
+
+  #question {
+    min-width: 100%;
+
+  }
+}
+
 </style>

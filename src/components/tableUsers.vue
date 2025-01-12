@@ -64,13 +64,15 @@ body {
 
 button {
   padding: 8px 16px;
-  background-color: #4CAF50;
+  margin-left: 10px;
+  background-color: #af4c4c;
   border: none;
   cursor: pointer;
+
 }
 
 button:hover {
-  background-color: #45a049;
+  background-color: #a0455a;
 }
 
 ul {
@@ -83,7 +85,7 @@ li {
 }
 
 a {
-  color: blue;
+  color: #08ff00;
   text-decoration: none;
 }
 

@@ -27,6 +27,7 @@ export default defineConfig({
         {
           text: 'Guide',
           items: [
+            { text: 'Installation', link: '/guide/installation' },
             { text: 'Configuration', link: '/guide/configuration' },
             { text: 'Api', link: '/guide/api' },
 
@@ -36,7 +37,7 @@ export default defineConfig({
     },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
+      { icon: 'github', link: 'https://github.com/Corentin-k' }
     ],
     footer: {
       message: 'Released under the <a href="https://github.com/vuejs/vitepress/blob/main/LICENSE">MIT License</a>.',

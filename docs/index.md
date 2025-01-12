@@ -4,28 +4,40 @@ layout: home
 
 hero:
   name: "Quiz App"
-  text: "A VitePress Site"
-  tagline: My great project tagline
+  text: "The ultimate platform for quizzes and challenges."
+  tagline: "A VitePress Site"
+  image:
+    src: quizapp.png # Add your hero image here
+    alt: "Quiz App Hero Image"
   actions:
     - theme: brand
-      text: Start
-      link: /guide/configuration
+      text: Get Started
+      link: /guide/installation
     - theme: alt
-      text: API
-      link:  /guide/api
+      text: Explore API
+      link: /guide/api
     - theme: alt
       text: View on GitHub
       link: https://github.com/Corentin-k/QuizApp
-    
+
 features:
   - icon: 🛠️
-    title: Simple and minimal, always
-    details: Lorem ipsum...
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+    title: Admin View
+    details: "Manage users, questions, and view live responses effortlessly."
+  - icon: ✨
+    title: Feature A
+    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  - icon: 🔒
+    title: Feature B
+    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  - icon: 🌍
+    title: Feature C
+    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 ---
 
+# Welcome to Quiz App
+
+![Main Page Image](admin-view.png)
+
+
+> Explore the [API documentation](/guide/api) or get started with the [configuration guide](/guide/configuration).
