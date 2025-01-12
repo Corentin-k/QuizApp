@@ -35,7 +35,9 @@ h1 {
   top:0;
   left: 50%;
   translate: -50%;
-
+  background-color: #242424;
+  width: 100%;
+  margin-top: 0px;
 }
 
 
@@ -75,6 +77,7 @@ h1 {
 
 @media (max-width: 768px) {
   .layout {
+    padding-top:50px;
     flex-direction: column;
     align-items: center;
   }
@@ -82,7 +85,11 @@ h1 {
   #tabUsers,
   #question {
     max-width: none;
-    width: 90%;
+    min-width: auto;
   }
+  #tabUsers{
+    margin: 0;
+  }
+
 }
 </style>
