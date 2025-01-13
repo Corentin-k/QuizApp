@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h1>Quiz Admin</h1>
+    <h1>Quiz App</h1>
     <router-view />
   </div>
 </template>
