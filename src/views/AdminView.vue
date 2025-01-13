@@ -1,7 +1,7 @@
 <template>
   <logout-button />
   <div class="admin-container">
-    <h1>Quiz Admin</h1>
+
     <div class="layout">
 
       <div id="tabUsers">
