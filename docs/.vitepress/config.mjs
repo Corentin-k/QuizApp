@@ -31,6 +31,7 @@ export default defineConfig({
             { text: 'Configuration', link: '/guide/configuration' },
             { text: 'Api', link: '/guide/api' },
 
+
           ]
         }
       ]

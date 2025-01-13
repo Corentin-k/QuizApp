@@ -6,7 +6,8 @@ USE quiz_db;
 -- Table des joueurs
 CREATE TABLE users (
                        id VARCHAR(36) PRIMARY KEY,  -- UUID for players
-                       name VARCHAR(255) NOT NULL,
+                       name VARCHAR(255) NOT NULL UNIQUE,
+                       password VARCHAR(255) NOT NULL,
                        link VARCHAR(255) NOT NULL,
                        score INT DEFAULT 0
 );
@@ -35,6 +36,3 @@ INSERT INTO questions (question, answers, correct_answer) VALUES
                                                               ('Combien font 5 + 3 ?', '["5", "8", "7", "10"]', 1),
                                                               ('Quelle est la couleur du ciel ?', '["Rouge", "Bleu", "Vert", "Jaune"]', 1);
 
--- Insert a user into the users table
-INSERT INTO users (id, name, link, score) VALUES
-    ('123e4567-e89b-12d3-a456-426614174000', 'John Doe', 'http://localhost:8080/player/123e4567-e89b-12d3-a456-426614174000', 0);

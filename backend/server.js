@@ -1,6 +1,7 @@
 const express = require('express');
 const WebSocket = require('ws');
-const uuid = require('uuid');
+const bcrypt = require('bcrypt');
+const { v4: uuidv4 } = require('uuid');
 const { query } = require('./db');
 require('dotenv').config()
 
@@ -68,18 +69,27 @@ const broadcast = (data) => {
 
 // Create a new user
 app.post('/users', async (req, res) => {
-    const { name } = req.body;
-    if (!name) {
-        return res.status(400).json({ error: 'Name is required' });
+    const { name, password} = req.body;
+    if (!name || !password) {
+        return res.status(400).json({ error: 'Missing values' });
+    }
+    // Verify if the user already exists
+    const [existingUser] = await query('SELECT * FROM users WHERE name = ?', [name]);
+    if (existingUser) {
+        return res.status(400).json({ error: 'User already exists' });
     }
 
-    const userId = uuid.v4();
+
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const userId = uuidv4();
     const link = `http://localhost:${dbPort}/player/${userId}`;
 
     try {
-        await query('INSERT INTO users (id, name, link, score) VALUES (?, ?, ?, 0)', [userId, name, link]);
+        await query('INSERT INTO users (id, name, password, link) VALUES (?,?, ?, ?)',
+            [userId, name,hashedPassword, link]);
 
-        const newUser = { id: userId, name, link, score: 0 };
+        const newUser = { id: userId, name, password, link, score: 0 };
         broadcast({ type: 'user_created', user: newUser }); // Diffusion WebSocket
         res.status(201).json(newUser);
     } catch (err) {
@@ -98,6 +108,35 @@ app.get('/users', async (req, res) => {
         res.status(500).json({ error: 'Database error' });
     }
 });
+
+app.post('/login', async (req, res) => {
+    const { name, password } = req.body;
+
+    if (!name || !password) {
+        return res.status(400).json({ error: 'Nom et mot de passe requis.' });
+    }
+
+    try {
+        const [user] = await query('SELECT * FROM users WHERE name = ?', [name]);
+        if (!user) {
+            return res.status(401).json({ error: 'Utilisateur non trouvé.' });
+        }
+
+        // Vérification du mot de passe
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ error: 'Mot de passe incorrect.' });
+        }
+
+        res.status(200).json({ id: user.id, name: user.name, link: user.link });
+    } catch (error) {
+        console.error('Erreur lors de la connexion:', error);
+        res.status(500).json({ error: 'Erreur serveur.' });
+    }
+});
+
+
+
 
 // Fetch a single user
 app.get('/player/:id', async (req, res) => {

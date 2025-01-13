@@ -88,13 +88,34 @@ export const useUserStore = defineStore('userStore', {
                 console.error('Error deleting user:', err);
             }
         },
+        async loginUser(userName, password) {
+            try {
+                const res = await fetch('http://localhost:8081/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: userName, password }),
+                });
 
-        async createUser(userName) {
+                if (!res.ok) {
+                    throw new Error('Échec de la connexion');
+                }
+
+                const user = await res.json();
+                this.users.push(user);
+
+                return user;
+            } catch (err) {
+                console.error('Erreur lors de la connexion :', err);
+            }
+        },
+
+
+        async createUser(userName, password) {
             try {
                 const res = await fetch("http://localhost:8081/users", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ name: userName }),
+                    body: JSON.stringify({ name: userName, password }),
                 });
 
                 if (!res.ok) {
@@ -102,9 +123,13 @@ export const useUserStore = defineStore('userStore', {
                 }
 
                 const user = await res.json();
+                console.log('User created:', user);
                 this.users.push(user);
+                return user;
+
             } catch (err) {
                 console.error('Error creating user:', err);
+                return null;
             }
         },
     },

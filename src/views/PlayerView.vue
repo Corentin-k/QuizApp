@@ -10,12 +10,14 @@
   </template>
 
     <script>
+
       import { useUserStore } from '../store/store';
       import questionSection from "../components/questionSection.vue";
 
       export default {
         components: {
           questionSection,
+
       },
 
         computed: {
