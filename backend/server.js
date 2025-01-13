@@ -89,7 +89,7 @@ app.post('/users', async (req, res) => {
         await query('INSERT INTO users (id, name, password, link) VALUES (?,?, ?, ?)',
             [userId, name,hashedPassword, link]);
 
-        const newUser = { id: userId, name, password, link, score: 0 };
+        const newUser = { id: userId, name, link };
         broadcast({ type: 'user_created', user: newUser }); // Diffusion WebSocket
         res.status(201).json(newUser);
     } catch (err) {
@@ -101,7 +101,7 @@ app.post('/users', async (req, res) => {
 // Fetch all users
 app.get('/users', async (req, res) => {
     try {
-        const users = await query('SELECT * FROM users');
+        const users = await query('SELECT * FROM users WHERE role="player"');
         res.json(users);
     } catch (err) {
         console.error('Error fetching users:', err);
@@ -128,7 +128,7 @@ app.post('/login', async (req, res) => {
             return res.status(401).json({ error: 'Mot de passe incorrect.' });
         }
 
-        res.status(200).json({ id: user.id, name: user.name, link: user.link });
+        res.status(200).json({ id: user.id, name: user.name,role:user.role, link: user.link });
     } catch (error) {
         console.error('Erreur lors de la connexion:', error);
         res.status(500).json({ error: 'Erreur serveur.' });

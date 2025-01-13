@@ -1,4 +1,5 @@
 <template>
+  <logout-button />
   <div class="admin-container">
     <h1>Quiz Admin</h1>
     <div class="layout">
@@ -17,10 +18,12 @@
 <script>
 import tableUsers from "../components/tableUsers.vue";
 import questionSection from "../components/questionSection.vue";
+import LogoutButton from "../components/logoutButton.vue";
 
 export default {
   name: "adminView",
   components: {
+    LogoutButton,
     tableUsers,
     questionSection,
   },

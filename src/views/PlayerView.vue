@@ -1,10 +1,12 @@
 <template>
+    <logout-button  />
     <div>
       <h1>{{ user.name }} {{user.id}}</h1>
 
       <div id="question">
         <question-section />
       </div>
+
     </div>
 
   </template>
@@ -13,9 +15,11 @@
 
       import { useUserStore } from '../store/store';
       import questionSection from "../components/questionSection.vue";
+      import LogoutButton from "../components/logoutButton.vue";
 
       export default {
         components: {
+          LogoutButton,
           questionSection,
 
       },
@@ -34,7 +38,6 @@
             userStore.fetchUsers();
           }
         },
-
 
       };
     </script>

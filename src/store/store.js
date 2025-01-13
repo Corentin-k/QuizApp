@@ -102,14 +102,16 @@ export const useUserStore = defineStore('userStore', {
 
                 const user = await res.json();
                 this.users.push(user);
-
+                this.saveUserDom(user);
                 return user;
             } catch (err) {
                 console.error('Erreur lors de la connexion :', err);
             }
         },
 
-
+        saveUserDom(user) {
+            localStorage.setItem('user', JSON.stringify(user));
+        },
         async createUser(userName, password) {
             try {
                 const res = await fetch("http://localhost:8081/users", {
@@ -125,6 +127,7 @@ export const useUserStore = defineStore('userStore', {
                 const user = await res.json();
                 console.log('User created:', user);
                 this.users.push(user);
+                this.saveUserDom(user);
                 return user;
 
             } catch (err) {

@@ -3,6 +3,7 @@
     <div>
       <h2>Create User</h2>
       <input type="text" v-model="newUserName" placeholder="Enter user name" />
+      <input type="password" v-model="newUserPassword" placeholder="Enter user password" />
       <button @click="createUser">Create</button>
       <div v-if="createError" style="color: red;">{{ createError }}</div>
       <h2>Users</h2>
@@ -26,6 +27,7 @@ export default {
   data() {
     return {
       newUserName: '',
+      newUserPassword: '',
       createError: null,
     };
   },
@@ -43,7 +45,7 @@ export default {
   methods: {
     async createUser() {
       const userStore = useUserStore();
-      await userStore.createUser(this.newUserName);
+      await userStore.createUser(this.newUserName, this.newUserPassword);
       this.newUserName = '';
     },
     async deleteUser(userId) {

@@ -9,7 +9,8 @@ CREATE TABLE users (
                        name VARCHAR(255) NOT NULL UNIQUE,
                        password VARCHAR(255) NOT NULL,
                        link VARCHAR(255) NOT NULL,
-                       score INT DEFAULT 0
+                       score INT DEFAULT 0,
+                       role ENUM('admin', 'player') DEFAULT 'player'
 );
 
 -- Table des questions
@@ -33,6 +34,6 @@ CREATE TABLE responses (
 -- Insert sample questions into the questions table
 INSERT INTO questions (question, answers, correct_answer) VALUES
                                                               ('Quelle est la capitale de la France ?', '["Paris", "Lyon", "Marseille", "Nice"]', 0),
-                                                              ('Combien font 5 + 3 ?', '["5", "8", "7", "10"]', 1),
-                                                              ('Quelle est la couleur du ciel ?', '["Rouge", "Bleu", "Vert", "Jaune"]', 1);
-
+                                                              ('Combien font 5 + 3 ?', '["5", "8", "7", "10"]', 1);
+INSERT INTO users (id, name, password, link, role) VALUES
+    ('550e8400-e29b-41d4-a716-446655440000', 'admin', '$2b$10$HzQ7P2Xv8jpYZ37/EE4JE.0JlE3iYQFFtcPztSKAPl8K3Mlecjvnu', 'admin', 'admin');
