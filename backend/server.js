@@ -11,7 +11,7 @@ const dbPort = process.env.PORT_DB; // Database port
 const wsPort = process.env.PORT_WS;   // WebSocket Server port
 const frontPort = process.env.PORT_FRONTEND
 
-const allowedOrigins = [`http://localhost:${frontPort}`, `https://10.3.202.11:${frontPort}`];
+const allowedOrigins = [`http://localhost:${frontPort}`, `https://10.3.202.11:${frontPort}`,`http://localhost:5176`];
 
 app.use(cors({
     origin: (origin, callback) => {
@@ -37,6 +37,7 @@ const server = app.listen(dbPort, () => {
     console.log(`HTTP Server running on port ${dbPort}`);
 });
 
+////////////////////////////////////////////////////////////////////////
 // WebSocket Server
 const wsServer = new WebSocket.Server({ port: wsPort });
 
@@ -64,7 +65,7 @@ const broadcast = (data) => {
         }
     });
 };
-
+////////////////////////////////////////////////////////////////////////
 // Routes API REST
 
 // Create a new user
@@ -76,10 +77,8 @@ app.post('/users', async (req, res) => {
     // Verify if the user already exists
     const [existingUser] = await query('SELECT * FROM users WHERE name = ?', [name]);
     if (existingUser) {
-        return res.status(400).json({ error: 'User already exists' });
+        return res.status(409).json({ error: 'User already exists' });
     }
-
-
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const userId = uuidv4();
@@ -91,7 +90,7 @@ app.post('/users', async (req, res) => {
 
         const newUser = { id: userId, name, link };
         broadcast({ type: 'user_created', user: newUser }); // Diffusion WebSocket
-        res.status(201).json(newUser);
+        res.status(201).json({ message: 'User created successfully.', user: newUser });
     } catch (err) {
         console.error('Error creating user:', err);
         res.status(500).json({ error: 'Database error' });
@@ -109,7 +108,7 @@ app.get('/users', async (req, res) => {
     }
 });
 
-app.post('/login', async (req, res) => {
+app.post('/users/login', async (req, res) => {
     const { name, password } = req.body;
 
     if (!name || !password) {
@@ -139,7 +138,7 @@ app.post('/login', async (req, res) => {
 
 
 // Fetch a single user
-app.get('/player/:id', async (req, res) => {
+app.get('/users/:id', async (req, res) => {
     const userId = req.params.id;
 
     try {
@@ -197,6 +196,43 @@ app.put('/users/:id/increment', async (req, res) => {
         console.error("Error incrementing score:", err);
         res.status(500).json({ error: 'Database error' });
     }
+});
+
+const fs = require('fs');
+
+
+app.use(express.json());
+const loadQuestions = () => {
+    const data = fs.readFileSync('./backend/questions.json', 'utf-8');
+    return JSON.parse(data).questions;
+};
+const questions = loadQuestions();
+// Endpoint pour récupérer toutes les questions
+app.get('/questions', (req, res) => {
+
+    res.json(questions);
+});
+
+// Endpoint pour récupérer une question par ID
+app.get('/questions/:id', (req, res) => {
+
+    const question = questions.find(q => q.id === parseInt(req.params.id));
+    if (!question) {
+        return res.status(404).json({ error: 'Question non trouvée' });
+    }
+    res.json(question);
+});
+
+app.get('/questions/categorie/:categorie', (req, res) => {
+    const category = req.params.categorie; // Récupérer la catégorie de l'URL
+    const question = questions.filter(q => q.category.toLowerCase() === category.toLowerCase());
+    if (question.length === 0) {
+
+
+        return res.status(404).json({ error: 'Question non trouvée' });
+    }
+    res.json(question);
+
 });
 
 

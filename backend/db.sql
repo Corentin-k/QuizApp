@@ -12,7 +12,7 @@ CREATE TABLE users (
                        role ENUM('admin', 'player') DEFAULT 'player'
 );
 
-
+/*
 CREATE TABLE questions (
                            id INT AUTO_INCREMENT PRIMARY KEY,
                            type ENUM('song', 'qcm', 'question') NOT NULL,
@@ -33,6 +33,8 @@ CREATE TABLE responses (
 
 INSERT INTO questions (type, question, options, correct_answer) VALUES
     ('qcm', 'Quelle est la capitale de la France ?', '["Paris", "Lyon", "Marseille", "Nice"]', '0');
+*/
+ */
 
 -- ! Creation of an admin user
 INSERT INTO users (id, name, password, link, role) VALUES

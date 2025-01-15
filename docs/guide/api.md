@@ -54,129 +54,34 @@ ws.on('connection', (ws) => {
 ```
 
 ## Routes API REST
-
-### 1. Create a New User
-
-`POST /users`
-
-Create a new user and store it in the database.
-
-#### Request Body
-
-```json
-{
-  "name": "John Doe"
-}
-```
-
-#### Response
-
-```json
-{
-  "id": "uuid",
-  "name": "John Doe",
-  "link": "http://localhost:8081/player/uuid",
-  "score": 0
-}
-```
-
-#### Example
-
-```bash
-curl -X POST http://localhost:8081/users -d '{"name": "John Doe"}' -H "Content-Type: application/json"
-```
-
-### 2. Fetch All Users
-
-`GET /users`
-
-Retrieve all users in the database.
-
-#### Response
-
-```json
-[
-  { "id": "uuid", "name": "John Doe", "link": "http://localhost:8081/player/uuid", "score": 0 }
-]
-```
-
-#### Example
-
-```bash
-curl http://localhost:8081/users
-```
-
-### 3. Fetch a Single User
-
-`GET /player/:id`
-
-Retrieve a user by their unique ID.
-
-#### Example
-
-```bash
-curl http://localhost:8081/player/uuid
-```
-
-#### Response
-
-```json
-{
-  "id": "uuid",
-  "name": "John Doe",
-  "link": "http://localhost:8081/player/uuid",
-  "score": 0
-}
-```
-
-### 4. Delete a User
-
-`DELETE /users/:id`
-
-Delete a user by their unique ID.
-
-#### Example
-
-```bash
-curl -X DELETE http://localhost:8081/users/uuid
-```
-
-#### Response
-
-```json
-{
-  "message": "User deleted"
-}
-```
-
-### 5. Increment User Score
-
-`PUT /users/:id/increment`
-
-Increment the score of a user.
-
-#### Example
-
-```bash
-curl -X PUT http://localhost:8081/users/uuid/increment
-```
-
-#### Response
-
-```json
-{
-  "message": "Score incremented"
-}
-```
-
-### Error Handling
-
-If any error occurs during database operations, the API will respond with a status of `500` and an error message.
-
-```json
-{
-  "error": "Database error"
-}
-```
-
+/users
+POST
+description: Create a new user
+parameters:
+- name: username
+type: string
+required: true
+- name: password
+type: string
+required: true
+GET
+description: Get all users
+parameters: []
+{id}
+GET
+description: Get user by id
+parameters: []
+DELETE
+description: Delete user by id
+parameters: []
+/login
+POST
+description: Login
+parameters:
+- name: username
+type: string
+required: true
+- name: password
+type: string
+required: true
 

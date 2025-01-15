@@ -1,0 +1,91 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "category": "géo",
+      "type": "qcm",
+      "question": "Quelle est la capitale de la France ?",
+      "answers": ["Paris", "Lyon", "Marseille", "Nice"],
+      "correct_answer": 0
+    },
+    {
+      "id": 2,
+      "category": "maths",
+      "type": "qcm",
+      "question": "Combien font 5 + 3 ?",
+      "answers": ["5", "8", "7", "10"],
+      "correct_answer": 1
+    },
+    {
+      "id": 3,
+      "category": "cg",
+      "type": "choix_multiple",
+      "question": "Quelle est la couleur du ciel ?",
+      "answers": ["Rouge", "Bleu", "Vert", "Jaune"],
+      "correct_answer": 1
+    },
+    {
+      "id": 4,
+      "category": "musique",
+      "type": "song",
+      "question": "Complétez les paroles de cette chanson : 'Aux Champs-Élysées, au soleil, sous la pluie, à midi ou à minuit...' ?",
+      "answers": ["Il y a tout ce que vous voulez", "Les amoureux se retrouvent", "Les lumières brillent fort", "C'est la magie de Paris"],
+      "correct_answer": 0
+    },
+    {
+      "id": 5,
+      "category": "histoire",
+      "type": "qcm",
+      "question": "En quelle année la Révolution française a-t-elle commencé ?",
+      "answers": [],
+      "correct_answer": "1789"
+    },
+    {
+      "id": 6,
+      "category": "cg",
+      "type": "qcm",
+      "question": "Quel est le plus grand océan du monde ?",
+      "answers": ["Océan Atlantique", "Océan Pacifique", "Océan Indien", "Océan Arctique"],
+      "correct_answer": 1
+    },
+    {
+      "id": 7,
+      "category": "maths",
+      "type": "qcm",
+      "question": "Quelle est la racine carrée de 81 ?",
+      "answers": ["7", "8", "9", "10"],
+      "correct_answer": 2
+    },
+    {
+      "id": 8,
+      "category": "histoire",
+      "type": "qcm",
+      "question": "Qui était le premier président des États-Unis ?",
+      "answers": ["Abraham Lincoln", "George Washington", "Thomas Jefferson", "John Adams"],
+      "correct_answer": 1
+    },
+    {
+      "id": 9,
+      "category": "geo",
+      "type": "qcm",
+      "question": "Quel est le plus haut sommet du monde ?",
+      "answers": ["Mont Everest", "Mont Kilimandjaro", "Mont McKinley", "Mont Elbrouz"],
+      "correct_answer": 0
+    },
+    {
+      "id": 10,
+      "category": "musique",
+      "type": "song",
+      "question": "Quelle chanteuse a interprété la chanson 'Hello' sortie en 2015 ?",
+      "answers": ["Beyoncé", "Adele", "Rihanna", "Taylor Swift"],
+      "correct_answer": 1
+    },
+    {
+      "id": 11,
+      "category": "cg",
+      "type": "question",
+      "question": "Quelle est la capitale du Canada ?",
+      "correct_answer": "Ottawa"
+    }
+  ]
+}

@@ -90,7 +90,7 @@ export const useUserStore = defineStore('userStore', {
         },
         async loginUser(userName, password) {
             try {
-                const res = await fetch('http://localhost:8081/login', {
+                const res = await fetch('http://localhost:8081/users/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name: userName, password }),
