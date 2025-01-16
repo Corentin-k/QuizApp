@@ -50,12 +50,14 @@
       <button @click="fetchNextQuestion">Prochaine question</button>
       <button @click="startQuiz" :disabled="sessionActive">Démarrer le quiz</button>
       <button @click="stopAnswering">Arrêter de répondre</button>
+      <button @click="stopQuiz">Arrêter le quiz</button>
     </div>
   </div>
 </template>
 
 <script>
 import { useQuestionStore } from "../store/questionStore";
+import axios from "axios";
 
 export default {
   name: "Quiz",
@@ -65,7 +67,6 @@ export default {
     };
   },
   computed: {
-    // Liaison avec le store
     currentQuestion() {
       return this.questionStore.currentQuestion;
     },
@@ -85,7 +86,7 @@ export default {
       await this.questionStore.fetchUser();
       this.questionStore.initWebSocket();
       if (this.isAdmin) {
-        this.questionStore.fetchQuestions();
+        await this.questionStore.fetchQuestions();
       }
     },
     // Démarrer le quiz
@@ -99,11 +100,24 @@ export default {
     // Soumettre une réponse
     submitAnswer(answer) {
       this.questionStore.submitAnswer(answer);
+      // fetch the user to update the score
+      let user=localStorage.getItem('user');
+      const id = JSON.parse(user).id;
+
+
+
+      if(!this.questionStore.isAdmin && answer === this.currentQuestion.answers[this.currentQuestion.correct_answer]){
+        axios.put(`http://localhost:8081/users/${id}/increment`);
+        console.log("incremented");
+      }
       this.userAnswer = "";
     },
 
     stopAnswering() {
       this.questionStore.stopAnswering();
+    },
+    stopQuiz() {
+      this.questionStore.stopQuiz();
     },
   },
   created() {

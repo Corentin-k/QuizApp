@@ -232,7 +232,7 @@ app.put('/users/:id/increment', async (req, res) => {
 
         // Diffuse the  updated user score
         const [updatedUser] = await query('SELECT id, score FROM users WHERE id = ?', [userId]);
-        broadcast({ type: 'UPDATE_SCORE', user: updatedUser });
+        broadcast({ type: 'UPDATE_SCORE', user: updatedUser});
 
         res.status(200).json({ message: 'Score incremented' });
     } catch (err) {

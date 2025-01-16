@@ -29,7 +29,9 @@ export const useQuestionStore = defineStore("questionStore", {
                     case  "stopQuestion":
                         this.canAnswer=false;
                         break;
+                    case "UPDATE_SCORE":
 
+                        break;
                     default:
                         console.log("Message non pris en charge :", message);
                 }
@@ -96,7 +98,13 @@ export const useQuestionStore = defineStore("questionStore", {
         },
 
 
-
+        stopQuiz() {
+            if (this.isAdmin) {
+                this.sessionActive = false;
+                this.currentQuestion = null;
+                this.ws.send(JSON.stringify({ type: "adminCommand", command: "stopQuiz" }));
+            }
+        },
 
         // Charger toutes les questions
         async fetchQuestions() {
