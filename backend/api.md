@@ -62,19 +62,13 @@
     /{id}
         GET
             description: Get question by ID
-    /answer/{question_id}
-        POST
-            description: Submit an answer to a question
+    /category/{category}
+        GET
+            description: Get questions by category
             parameters:
-                - name: user_id
+                - name: category
                 type: string
                 required: true
-                - name: answer
-                type: string
-                required: true
-            responses:
-                200: Answer submitted
-                400: Invalid answer format
 
 /leaderboard
     GET

@@ -3,14 +3,18 @@ const WebSocket = require('ws');
 const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 const { query } = require('./db');
+const fs = require('fs');
+
 require('dotenv').config()
 
 const app = express();
-const cors = require('cors');
+
+
 const dbPort = process.env.PORT_DB; // Database port
 const wsPort = process.env.PORT_WS;   // WebSocket Server port
 const frontPort = process.env.PORT_FRONTEND
 
+const cors = require('cors');
 const allowedOrigins = [`http://localhost:${frontPort}`, `https://10.3.202.11:${frontPort}`,`http://localhost:5176`];
 
 app.use(cors({
@@ -25,6 +29,7 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+
 app.use(express.json());
 
 console.log('Starting server...');
@@ -32,6 +37,8 @@ console.log('Starting server...');
 
 
 let connectedClients = [];
+let currentQuestion = null;
+
 
 const server = app.listen(dbPort, () => {
     console.log(`HTTP Server running on port ${dbPort}`);
@@ -40,20 +47,55 @@ const server = app.listen(dbPort, () => {
 ////////////////////////////////////////////////////////////////////////
 // WebSocket Server
 const wsServer = new WebSocket.Server({ port: wsPort });
-
-wsServer.on('connection', (ws) => {
-    console.log('New WebSocket connection');
+wsServer.on("connection", (ws) => {
+    console.log("Nouvelle connexion WebSocket");
     connectedClients.push(ws);
 
-    ws.on('message', (message) => {
-        console.log('WebSocket message received:', message);
+    // Envoyer l'état actuel au client
+    if (currentQuestion) {
+        ws.send(JSON.stringify({ type: "question", data: currentQuestion }));
+    }
+
+    ws.on("message", (message) => {
+        const parsedMessage = JSON.parse(message);
+
+
+        if (parsedMessage.type === "adminCommand") {
+            switch (parsedMessage.command) {
+                case "startQuiz":
+                    currentQuestion = parsedMessage.data || null;
+                    broadcast({ type: "question", data: currentQuestion });
+                    break;
+
+                case "nextQuestion":
+                    currentQuestion = parsedMessage.data;
+                    broadcast({ type: "question", data: currentQuestion });
+                    break;
+
+                case "stopQuiz":
+                    currentQuestion = null;
+                    broadcast({ type: "info", data: "Le quiz est terminé." });
+                    break;
+                case "stopQuestion":
+                    broadcast({ type: "stopQuestion" });
+                    break;
+                default:
+                    console.log("Commande non reconnue :", parsedMessage.command);
+            }
+        }
+
+        // Traitement des réponses utilisateur
+        else if (parsedMessage.type === "userAnswer") {
+            console.log("Réponse reçue :", parsedMessage.answer);
+        }
     });
 
-    ws.on('close', () => {
-        console.log('WebSocket connection closed');
+    ws.on("close", () => {
+        console.log("Connexion WebSocket fermée");
         connectedClients = connectedClients.filter(client => client !== ws);
     });
 });
+
 
 console.log(`WebSocket Server running on port ${wsPort}`);
 
@@ -65,6 +107,7 @@ const broadcast = (data) => {
         }
     });
 };
+
 ////////////////////////////////////////////////////////////////////////
 // Routes API REST
 
@@ -198,16 +241,14 @@ app.put('/users/:id/increment', async (req, res) => {
     }
 });
 
-const fs = require('fs');
-
-
-app.use(express.json());
+////////////////////////////////////////////////////////////////////////
+// Questions API
 const loadQuestions = () => {
     const data = fs.readFileSync('./backend/questions.json', 'utf-8');
     return JSON.parse(data).questions;
 };
 const questions = loadQuestions();
-// Endpoint pour récupérer toutes les questions
+
 app.get('/questions', (req, res) => {
 
     res.json(questions);
@@ -235,6 +276,7 @@ app.get('/questions/categorie/:categorie', (req, res) => {
 
 });
 
+//////////////////////////////////////////////////////////////////////////////////////////
 
 app.use((req, res, next) => {
     console.log(`${req.method} ${req.url}`);

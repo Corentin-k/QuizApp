@@ -19,7 +19,7 @@
     {
       "id": 3,
       "category": "cg",
-      "type": "choix_multiple",
+      "type": "qcm",
       "question": "Quelle est la couleur du ciel ?",
       "answers": ["Rouge", "Bleu", "Vert", "Jaune"],
       "correct_answer": 1
@@ -27,7 +27,7 @@
     {
       "id": 4,
       "category": "musique",
-      "type": "song",
+      "type": "qcm",
       "question": "Complétez les paroles de cette chanson : 'Aux Champs-Élysées, au soleil, sous la pluie, à midi ou à minuit...' ?",
       "answers": ["Il y a tout ce que vous voulez", "Les amoureux se retrouvent", "Les lumières brillent fort", "C'est la magie de Paris"],
       "correct_answer": 0
@@ -35,7 +35,7 @@
     {
       "id": 5,
       "category": "histoire",
-      "type": "qcm",
+      "type": "question",
       "question": "En quelle année la Révolution française a-t-elle commencé ?",
       "answers": [],
       "correct_answer": "1789"
@@ -75,7 +75,7 @@
     {
       "id": 10,
       "category": "musique",
-      "type": "song",
+      "type": "qcm",
       "question": "Quelle chanteuse a interprété la chanson 'Hello' sortie en 2015 ?",
       "answers": ["Beyoncé", "Adele", "Rihanna", "Taylor Swift"],
       "correct_answer": 1
@@ -86,6 +86,15 @@
       "type": "question",
       "question": "Quelle est la capitale du Canada ?",
       "correct_answer": "Ottawa"
+    },
+    {
+      "id": 12,
+      "type": "song",
+      "question": "Guess the song from the clip.",
+      "audioUrl": "/audio/song1.mp3",
+      "answers": ["Song A", "Song B", "Song C", "Song D"],
+      "correct_answer": "Song B",
+      "category": "music"
     }
   ]
 }

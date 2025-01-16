@@ -54,34 +54,95 @@ ws.on('connection', (ws) => {
 ```
 
 ## Routes API REST
-/users
-POST
-description: Create a new user
-parameters:
-- name: username
-type: string
-required: true
-- name: password
-type: string
-required: true
-GET
-description: Get all users
-parameters: []
-{id}
-GET
-description: Get user by id
-parameters: []
-DELETE
-description: Delete user by id
-parameters: []
-/login
-POST
-description: Login
-parameters:
-- name: username
-type: string
-required: true
-- name: password
-type: string
-required: true
 
+
+This documentation describes the different routes of the API used in the quiz system.
+
+## /users
+
+### POST /users {#post-users}
+Create a new user.
+
+#### Parameters
+- `username` (string): The username (required).
+- `password` (string): The password (required).
+
+#### Responses
+- **201**: User created successfully.
+- **400**: Missing values.
+- **409**: User already exists.
+
+### GET /users {#get-users}
+Retrieve all users (admin-only access).
+
+#### Parameters
+- `page` (integer): The page number (optional).
+- `limit` (integer): The number of items to return per page (optional).
+
+#### Response
+- **200**: List of users.
+
+### GET /users/{id} {#get-users-id}
+Retrieve user details by their ID.
+
+#### Responses
+- **200**: User details.
+- **404**: User not found.
+
+### DELETE /users/{id} {#delete-users-id}
+Delete a user by their ID.
+
+#### Responses
+- **204**: User deleted successfully.
+- **403**: Unauthorized access.
+
+### POST /users/login {#post-users-login}
+Authenticate the user and return a token.
+
+#### Parameters
+- `username` (string): The username (required).
+- `password` (string): The password (required).
+
+#### Responses
+- **200**: Login successful, returns a token.
+- **401**: Invalid credentials.
+
+---
+
+## /questions
+
+### GET /questions {#get-questions}
+Retrieve all questions.
+
+#### Parameters
+- `page` (integer): The page number (optional).
+- `limit` (integer): The number of questions to return (optional).
+
+### GET /questions/{id} {#get-questions-id}
+Retrieve a question by its ID.
+
+#### Response
+- **200**: Question details.
+
+### GET /questions/category/{category} {#get-questions-category}
+Retrieve questions by category.
+
+#### Parameters
+- `category` (string): The category of the question (required).
+
+#### Response
+- **200**: List of questions matching the category.
+
+---
+
+## /leaderboard
+
+### GET /leaderboard {#get-leaderboard}
+Retrieve the leaderboard.
+
+#### Parameters
+- `limit` (integer): The number of items to return (optional).
+- `category` (string): The category of questions to filter the leaderboard (optional).
+
+#### Response
+- **200**: Leaderboard details.
