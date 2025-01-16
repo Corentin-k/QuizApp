@@ -106,7 +106,10 @@ export default {
 
 
 
-      if(!this.questionStore.isAdmin && answer === this.currentQuestion.answers[this.currentQuestion.correct_answer]){
+      if(!this.questionStore.isAdmin && (
+          (answer === this.currentQuestion.answers[this.currentQuestion.correct_answer ]&&this.currentQuestion.type === 'qcm')
+          || (answer === this.currentQuestion.correct_answer))
+      ){
         axios.put(`http://localhost:8081/users/${id}/increment`);
         console.log("incremented");
       }
