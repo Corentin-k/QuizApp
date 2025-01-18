@@ -79,7 +79,7 @@ h1 {
 }
 
 
-@media (max-width: 768px) {
+@media (max-width: 1110px) {
   .layout {
     padding-top:50px;
     flex-direction: column;
@@ -99,30 +99,4 @@ h1 {
   }
 
 }
-@media (max-width: 480px) {
-  h1 {
-    font-size: 20px; /* Réduction de la taille du texte */
-    padding: 15px 0;
-  }
-  h2{
-    font-size:15px;
-  }
-  .layout{
-    width: auto;
-    align-items: baseline;
-  }
-
-  #tabUsers,
-  #question {
-    width:auto;
-
-    padding: 10px;
-  }
-
-  #question {
-    min-width: 100%;
-
-  }
-}
-
 </style>

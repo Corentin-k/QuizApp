@@ -15,17 +15,16 @@ const wsPort = process.env.PORT_WS;   // WebSocket Server port
 const frontPort = process.env.PORT_FRONTEND
 
 const cors = require('cors');
-const allowedOrigins = [`http://localhost:${frontPort}`, `https://10.3.202.11:${frontPort}`,`http://localhost:5176`];
+const allowedOrigins = [
+    `http://localhost:${frontPort}`,
+    'http://192.168.1.109:5175',
+    'http://192.168.56.1:5175',
+    `https://10.3.202.11:${frontPort}`,
+    'http://localhost:5176',
+];
 
 app.use(cors({
-    origin: (origin, callback) => {
-        // Vérifie si l'origine de la requête est dans la liste
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Non autorisé par CORS'));
-        }
-    }, // Front-end URL
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
@@ -38,6 +37,7 @@ console.log('Starting server...');
 
 let connectedClients = [];
 let currentQuestion = null;
+let userResponses = {};
 
 
 const server = app.listen(dbPort, () => {
@@ -51,30 +51,52 @@ wsServer.on("connection", (ws) => {
     console.log("Nouvelle connexion WebSocket");
     connectedClients.push(ws);
 
-    // Envoyer l'état actuel au client
-    if (currentQuestion) {
-        ws.send(JSON.stringify({ type: "question", data: currentQuestion }));
-    }
+
 
     ws.on("message", (message) => {
         const parsedMessage = JSON.parse(message);
+        if(parsedMessage.type === "authenticate"){
+            const userId = parsedMessage.userId;
+            console.log(`Utilisateur ${userId} connecté`);
+            ws.userId = userId;
+        }
+        if (parsedMessage.type === "userAnswer") {
+            const { userId, answer } = parsedMessage;
 
+            userResponses[userId] = true;
+
+            console.log(`Utilisateur ${userId} a répondu : ${answer}`);
+
+
+            broadcast({ type: "userAnswer", userId });
+
+
+            const totalUsers = connectedClients.length;
+            if (Object.keys(userResponses).length === totalUsers) {
+                console.log("Tous les utilisateurs ont répondu !");
+
+            }
+        }
 
         if (parsedMessage.type === "adminCommand") {
             switch (parsedMessage.command) {
                 case "startQuiz":
                     currentQuestion = parsedMessage.data || null;
+                    broadcast({ type: "start", data: "Le quiz va commencer." });
                     broadcast({ type: "question", data: currentQuestion });
                     break;
 
                 case "nextQuestion":
                     currentQuestion = parsedMessage.data;
+
+                    userResponses = {};
+
                     broadcast({ type: "question", data: currentQuestion });
                     break;
 
                 case "stopQuiz":
                     currentQuestion = null;
-                    broadcast({ type: "info", data: "Le quiz est terminé." });
+                    broadcast({ type: "stopQuiz", data: "Le quiz est terminé." });
                     break;
                 case "stopQuestion":
                     broadcast({ type: "stopQuestion" });
@@ -84,15 +106,14 @@ wsServer.on("connection", (ws) => {
             }
         }
 
-        // Traitement des réponses utilisateur
-        else if (parsedMessage.type === "userAnswer") {
-            console.log("Réponse reçue :", parsedMessage.answer);
-        }
+
+
     });
 
     ws.on("close", () => {
         console.log("Connexion WebSocket fermée");
         connectedClients = connectedClients.filter(client => client !== ws);
+
     });
 });
 
@@ -131,7 +152,7 @@ app.post('/users', async (req, res) => {
         await query('INSERT INTO users (id, name, password, link) VALUES (?,?, ?, ?)',
             [userId, name,hashedPassword, link]);
 
-        const newUser = { id: userId, name, link };
+        const newUser = { id: userId, name: name,link: link };
         broadcast({ type: 'user_created', user: newUser }); // Diffusion WebSocket
         res.status(201).json({ message: 'User created successfully.', user: newUser });
     } catch (err) {

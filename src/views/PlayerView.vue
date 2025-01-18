@@ -1,9 +1,10 @@
 <template>
     <logout-button  />
-    <div>
-      <h1>{{ user.name }} {{user.id}}</h1>
 
-      <div id="question">
+  <h1>{{ user.name.toUpperCase() }}</h1>
+
+  <div id="question">
+      <div >
         <question-section />
       </div>
 
@@ -61,13 +62,15 @@ a:hover {
 }
 
 #question {
-  flex: 2; /* La section des questions occupe plus d'espace */
-  min-width: 700px;
+  flex: 2;
+  min-width: 600px;
+  max-width: 800px;
   min-height: 500px;
   padding: 20px;
-  background-color: #333; /* Fond sombre */
+  background-color: #333;
   border: 4px solid red;
   border-radius: 20px;
+  margin-top: 50px;
 
   text-align: center;
 }

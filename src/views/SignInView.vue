@@ -15,10 +15,7 @@
         <input v-model="confirmPassword" id="confirmPassword" type="password" required />
         <p v-if="passwordMismatch" class="error">Passwords do not match!</p>
       </div>
-      <div class="form-group">
-        <label for="rememberMe">Remember Me</label>
-        <input v-model="rememberMe" type="checkbox" id="rememberMe" />
-      </div>
+
       <button type="submit" :disabled="passwordMismatch">Sign In</button>
     </form>
   </div>
@@ -51,8 +48,8 @@ export default {
 
         try {
           const userStore = useUserStore();
-          const user = await userStore.createUser(this.username, this.password);
-
+          const message = await userStore.createUser(this.username, this.password);
+          const user=message.user
           if (user) {
             alert('User created successfully!');
             this.$router.push({ name: 'Player', params: { id: user.id } });

@@ -96,6 +96,7 @@ button {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  margin: 20px 0;
 }
 
 button:disabled {

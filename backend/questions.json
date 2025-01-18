@@ -1,100 +1,129 @@
 {
   "questions": [
+
     {
       "id": 1,
       "category": "géo",
       "type": "qcm",
-      "question": "Quelle est la capitale de la France ?",
-      "answers": ["Paris", "Lyon", "Marseille", "Nice"],
-      "correct_answer": 0
+      "question": "Quel homme politique français et ancien ministre de la Justice est décédé le 9 février 2024 ?",
+      "answers": ["michrd Rocard", "Robert Badinter","Jacques Delors","Herni Emmanuelli"],
+      "correct_answer":  "Robert Badinter"
     },
     {
       "id": 2,
-      "category": "maths",
+      "category": "politique",
       "type": "qcm",
-      "question": "Combien font 5 + 3 ?",
-      "answers": ["5", "8", "7", "10"],
-      "correct_answer": 1
+      "question": "Quelle élection présidentielle marquante a lieu en 2024 ?",
+      "answers": ["Élection présidentielle en France", "Élection présidentielle aux États-Unis", "Élection présidentielle en Russie", "Élection présidentielle au Brésil"],
+      "correct_answer": "Élection présidentielle aux États-Unis"
     },
     {
       "id": 3,
-      "category": "cg",
+      "category": "sport",
       "type": "qcm",
-      "question": "Quelle est la couleur du ciel ?",
-      "answers": ["Rouge", "Bleu", "Vert", "Jaune"],
-      "correct_answer": 1
+      "question": "Quelle était l’affiche de la finale de l’Euro de football masculin du 14 juillet 2024 ?",
+      "answers": ["Espagne-Pays Bas", "Angleterre-Allemagne", "Espagne-Angleterre", "PaysBas-Allemagne"],
+      "correct_answer": "Espagne-Angleterre"
     },
     {
       "id": 4,
-      "category": "musique",
+      "category": "cinéma",
       "type": "qcm",
-      "question": "Complétez les paroles de cette chanson : 'Aux Champs-Élysées, au soleil, sous la pluie, à midi ou à minuit...' ?",
-      "answers": ["Il y a tout ce que vous voulez", "Les amoureux se retrouvent", "Les lumières brillent fort", "C'est la magie de Paris"],
-      "correct_answer": 0
+      "question": "Quel chanteur français a fait un tube en 2024 avec le titre \"Ceux qu'on était\" ?",
+      "answers": ["M Pokora", "Pierre Garnier", "Pierre de Maere", "Julien Leb"],
+      "correct_answer": "Pierre Garnier"
     },
     {
       "id": 5,
-      "category": "histoire",
+      "category": "musique",
       "type": "question",
-      "question": "En quelle année la Révolution française a-t-elle commencé ?",
-      "answers": [],
-      "correct_answer": "1789"
+      "question": "Quel est le nom du directeur artistique de la cérémonie d’ouverture spectaculaire des Jeux olympiques de Paris 2024 sur la Seine ?",
+      "answers": ["Taylor Swift", "Beyoncé", "The Weeknd", "Ed Sheeran"],
+      "correct_answer": "thomas jolly"
     },
     {
       "id": 6,
-      "category": "cg",
+      "category": "histoire",
       "type": "qcm",
-      "question": "Quel est le plus grand océan du monde ?",
-      "answers": ["Océan Atlantique", "Océan Pacifique", "Océan Indien", "Océan Arctique"],
-      "correct_answer": 1
+      "question": "Quel est le nom du Premier ministre britannique entré en fonction le 4 juillet 2024 ?",
+      "answers": ["Keir Starmer", "Dick Schoof", "Sam Mostyn", "Simon Harris"],
+      "correct_answer": "Keir Starmer"
     },
     {
       "id": 7,
-      "category": "maths",
+      "category": "science",
       "type": "qcm",
-      "question": "Quelle est la racine carrée de 81 ?",
-      "answers": ["7", "8", "9", "10"],
-      "correct_answer": 2
+      "question": "Quel est le nom de ce militant écologiste interpellé par les autorités danoises puis libéré en France en 2024 après 149 jours de prison au Groenland ?",
+      "answers": ["Paul Watson", "David Attenborough", "Peter Garrett", "Phil Radford"],
+      "correct_answer": "Paul Watson"
     },
     {
       "id": 8,
-      "category": "histoire",
+      "category": "musique",
       "type": "qcm",
-      "question": "Qui était le premier président des États-Unis ?",
-      "answers": ["Abraham Lincoln", "George Washington", "Thomas Jefferson", "John Adams"],
-      "correct_answer": 1
+      "question": "Quel artiste s'est produit à la mi-temps du Super Bowl 2024 ?",
+      "answers": ["Pitbull", "Justin Bieber", "Ed Sheran", "Usher"],
+      "correct_answer": "Usher"
     },
     {
       "id": 9,
-      "category": "geo",
-      "type": "qcm",
-      "question": "Quel est le plus haut sommet du monde ?",
-      "answers": ["Mont Everest", "Mont Kilimandjaro", "Mont McKinley", "Mont Elbrouz"],
-      "correct_answer": 0
+      "category": "géo",
+      "type": "question",
+      "question": "Combien de Premiers ministres la France a-t-elle eu durant toute l’année 2024 ?",
+      "correct_answer": "4"
     },
     {
       "id": 10,
-      "category": "musique",
+      "category": "geo",
       "type": "qcm",
-      "question": "Quelle chanteuse a interprété la chanson 'Hello' sortie en 2015 ?",
-      "answers": ["Beyoncé", "Adele", "Rihanna", "Taylor Swift"],
-      "correct_answer": 1
+      "question": "Quelle province espagnole a été principalement touchée par des inondations meurtrières les 29 et 30 octobre 2024 ?",
+      "answers": ["Valence", "Malaga", "Séville", "Tarragone"],
+      "correct_answer": "Valence"
     },
     {
       "id": 11,
-      "category": "cg",
-      "type": "question",
-      "question": "Quelle est la capitale du Canada ?",
-      "correct_answer": "Ottawa"
+      "category": "histoire",
+      "type": "qcm",
+      "question": "Quelle date marque la dissolution de l’Assemblée Nationale en France en 2024 ?",
+      "answers": ["20 mai","9 juin", "30 juin" , "12 juillet"],
+      "correct_answer": "9 juin"
+    },
+
+
+{
+      "id": 13,
+      "category": "géo",
+      "type": "qcm",
+      "question": "Quel pays a imposé la loi martiale en décembre 2024 ?",
+      "answers": ["Singapour", "Thaïland", "Laos", "Corée du Sud"],
+      "correct_answer": "Corée du Sud"
     },
     {
-      "id": 12,
+      "id": 14,
+      "category": "histoire",
+      "type": "qcm",
+      "question": "Quelle guerre a pris fin en 1945 ?",
+      "answers": ["Guerre de Sécession", "Première Guerre mondiale", "Guerre de Corée", "Seconde Guerre mondiale"],
+      "correct_answer": "Seconde Guerre mondiale"
+    },
+    {
+      "id": 15,
+      "category": "cinéma",
+      "type": "qcm",
+      "question": "Quel film a remporté l'Oscar du meilleur film en 2024 ?",
+      "answers": ["Oppenheimer", "Barbie", "Pauvres créatures", "Anatomie d'une chute"],
+      "correct_answer": "Oppenheimer"
+    },
+
+    {
+      "id": 16,
+      "category": "music",
       "type": "song",
-      "question": "Guess the song from the clip.",
-      "audioUrl": "/audio/song1.mp3",
-      "answers": ["Song A", "Song B", "Song C", "Song D"],
-      "correct_answer": "Song B",
-      "category": "music"
+      "question": "son",
+      "audioUrl": "/audio/song2.mp3",
+      "answers": ["Shape of You - Ed Sheeran", "Blinding Lights - The Weeknd", "Levitating - Dua Lipa", "Montero - Lil Nas X"],
+      "correct_answer": "Blinding Lights - The Weeknd"
+
     }
   ]
 }

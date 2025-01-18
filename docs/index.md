@@ -4,7 +4,7 @@ layout: home
 
 hero:
   name: "Quiz App"
-  text: "The ultimate platform for quizzes and challenges."
+  text: "The best platform for quiz."
   tagline: "A VitePress Site"
   image:
     src: quizapp.png # Add your hero image here

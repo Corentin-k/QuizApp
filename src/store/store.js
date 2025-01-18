@@ -5,11 +5,12 @@ export const useUserStore = defineStore('userStore', {
     state: () => ({
         users: [],  // User list
         socket: null,
+        userResponses: {},
     }),
     actions: {
         // WebSocket connection
         connectWebSocket() {
-            this.socket = new WebSocket('ws://localhost:8082');
+            this.socket = new WebSocket(`ws://192.168.1.109:${import.meta.env.VITE_PORT_WS}/`);
 
             // WebSocket event listeners
 
@@ -27,6 +28,12 @@ export const useUserStore = defineStore('userStore', {
                     case 'DELETE_USER':
                         this.users = this.users.filter(u => u.id !== data.id);
                         break;
+                    case 'userAnswer':
+                        console.log('User answered:', data.userId);
+                        break;
+                }
+                if (data.type === 'userAnswer') {
+                    this.userResponses[data.userId] = true;  // Marque l'utilisateur comme ayant répondu
                 }
             };
 
@@ -35,15 +42,13 @@ export const useUserStore = defineStore('userStore', {
                 setTimeout(this.connectWebSocket, 1000); // Reconnect après 1 seconde
             };
         },
-
-        setUsers(users) {
-            this.users = users;
+        allUsersAnswered(totalUsers) {
+            return Object.keys(userResponses).length === totalUsers;
         },
-
         // Fetch the list of users from the server
         async fetchUsers() {
             try {
-                const res = await fetch("http://localhost:8081/users");
+                const res = await fetch("/users");
                 const users = await res.json();
                 if (Array.isArray(users)) {
                     this.users = users;
@@ -52,30 +57,10 @@ export const useUserStore = defineStore('userStore', {
                 console.error("Error fetching users:", err);
             }
         },
-
-        // Increment the score of a user
-        async incrementScore(userId) {
-            try {
-                const res = await fetch(`http://localhost:8081/users/${userId}/increment`, {
-                    method: 'PUT',
-                });
-
-                if (!res.ok) {
-                    throw new Error('Error incrementing score');
-                }
-
-                const updatedUser = await res.json();
-
-
-            } catch (err) {
-                console.error('Error incrementing score:', err);
-            }
-        }
-        ,
         // Delete a user
         async deleteUser(userId) {
             try {
-                const res = await fetch(`http://localhost:8081/users/${userId}`, {
+                const res = await fetch(`/users/${userId}`, {
                     method: "DELETE",
                 });
 
@@ -90,7 +75,7 @@ export const useUserStore = defineStore('userStore', {
         },
         async loginUser(userName, password) {
             try {
-                const res = await fetch('http://localhost:8081/users/login', {
+                const res = await fetch('/users/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name: userName, password }),
@@ -106,6 +91,7 @@ export const useUserStore = defineStore('userStore', {
                 return user;
             } catch (err) {
                 console.error('Erreur lors de la connexion :', err);
+                throw err;
             }
         },
 
@@ -114,7 +100,7 @@ export const useUserStore = defineStore('userStore', {
         },
         async createUser(userName, password) {
             try {
-                const res = await fetch("http://localhost:8081/users", {
+                const res = await fetch("/users", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ name: userName, password }),

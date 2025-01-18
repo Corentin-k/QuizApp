@@ -9,11 +9,25 @@ export const useQuestionStore = defineStore("questionStore", {
         canAnswer: true, // L'utilisateur peut répondre
         isAdmin: false, // L'utilisateur est administrateur
         sessionActive: false, // Le quiz est actif
+        isCorrectAnswer:false,
+
     }),
     actions: {
         initWebSocket() {
-            this.ws = new WebSocket("ws://localhost:8082");
+            this.ws = new WebSocket(`ws://192.168.1.109:${import.meta.env.VITE_PORT_WS}`);
+            this.ws.onopen = () => {
 
+                const user = JSON.parse(localStorage.getItem('user'));
+                this.userId = user?.id;
+
+                if (this.userId) {
+
+                    this.ws.send(JSON.stringify({
+                        type: "authenticate",
+                        userId: this.userId,
+                    }));
+                }
+            };
             this.ws.onmessage = (event) => {
                 const message = JSON.parse(event.data);
 
@@ -22,11 +36,24 @@ export const useQuestionStore = defineStore("questionStore", {
                     case "question":
                         this.updateQuestion(message.data);
                         break;
-
-                    case "info":
-                        alert(message.data);
+                    case "answered":
+                        if (message.data) {
+                            console.log("Vous avez déjà répondu.");
+                            this.canAnswer = false;
+                        } else {
+                            this.canAnswer = true;
+                        }
                         break;
+                    case "start":
+                        this.sessionActive = true;
+                        break;
+                    case "stopQuiz":
+                        alert(message.data);
+                        this.sessionActive = false;
+                        break;
+
                     case  "stopQuestion":
+
                         this.canAnswer=false;
                         break;
                     case "UPDATE_SCORE":
@@ -55,11 +82,16 @@ export const useQuestionStore = defineStore("questionStore", {
                 }));
             }
         },
+        changeStatus(message){
+            this.isCorrectAnswer=message;
+
+        },
 
         fetchNextQuestion() {
             if (this.questions.length > 0) {
                 const nextQuestion = this.questions.shift();
                 this.currentQuestion = nextQuestion;
+
                 this.ws.send(JSON.stringify({
                     type: "adminCommand",
                     command: "nextQuestion",
@@ -71,16 +103,18 @@ export const useQuestionStore = defineStore("questionStore", {
         stopAnswering() {
             if (this.isAdmin) {
                 this.ws.send(JSON.stringify({ type: "adminCommand", command: "stopQuestion" }));
+
             }
         },
 
-        submitAnswer(answer) {
+        submitAnswer(answer,userId) {
             if (this.canAnswer && this.currentQuestion) {
                 this.ws.send(JSON.stringify({
                     type: "userAnswer",
-                    answer,
+                    userId: userId,
+                    answer: answer
                 }));
-                this.toggleAnswering(false);
+                this.canAnswer = false;
             }
         },
 
@@ -109,7 +143,7 @@ export const useQuestionStore = defineStore("questionStore", {
         // Charger toutes les questions
         async fetchQuestions() {
             try {
-                const {data} = await axios.get("http://localhost:8081/questions");
+                const {data} = await axios.get("/questions");
                 this.questions = data; // Stocker toutes les questions dans l'état
             } catch (error) {
                 console.error("Erreur lors de la récupération des questions :", error);
@@ -118,19 +152,16 @@ export const useQuestionStore = defineStore("questionStore", {
 
 
 
-        // Activer ou désactiver la possibilité de répondre
+
         toggleAnswering(status) {
             this.canAnswer = status;
         },
 
-        // Définir le statut d'administrateur
+
         setAdminStatus(status) {
             this.isAdmin = status;
         },
 
-        // Définir le statut de la session
-        toggleSession(status) {
-            this.sessionActive = status;
-        },
+
     },
 });

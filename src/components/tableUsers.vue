@@ -9,7 +9,8 @@
       <h2>Users</h2>
       <ul>
         <li v-for="user in users" :key="user.id">
-          {{ user.name }} - {{ user.score }}
+          <span>{{ user.name }} - {{ user.score }}</span>
+          <span v-if="hasAnswered(user.id)">✔️</span>
           <router-link :to="'/player/' + user.id">Link</router-link>
           <button @click="deleteUser(user.id)">Delete</button>
         </li>
@@ -52,6 +53,10 @@ export default {
       const userStore = useUserStore();
       await userStore.deleteUser(userId);
     },
+    hasAnswered(userId) {
+      const userStore = useUserStore();
+      return userStore.userResponses[userId] === true;
+    },
   },
 };
 
@@ -93,6 +98,12 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+input{
+  margin: 10px;
+  width:200px;
+  height: 30px;
+  text-align: center;
 }
 
 </style>
