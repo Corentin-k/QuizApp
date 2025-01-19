@@ -12,7 +12,7 @@
 
     {
       "id": 1,
-      "category": "géo",
+      "category": "geo",
       "type": "qcm",
       "question": "Quel homme politique français et ancien ministre de la Justice est décédé le 9 février 2024 ?",
       "answers": ["michrd Rocard", "Robert Badinter","Jacques Delors","Herni Emmanuelli"],
@@ -44,7 +44,7 @@
     },
     {
       "id": 5,
-      "category": "musique",
+      "category": "music",
       "type": "question",
       "question": "Quel est le nom du directeur artistique de la cérémonie d’ouverture spectaculaire des Jeux olympiques de Paris 2024 sur la Seine ?",
       "answers": ["Taylor Swift", "Beyoncé", "The Weeknd", "Ed Sheeran"],
@@ -76,7 +76,7 @@
     },
     {
       "id": 9,
-      "category": "géo",
+      "category": "geo",
       "type": "question",
       "question": "Combien de Premiers ministres la France a-t-elle eu durant toute l’année 2024 ?",
       "correct_answer": "4"
@@ -101,7 +101,7 @@
 
 {
       "id": 13,
-      "category": "géo",
+      "category": "geo",
       "type": "qcm",
       "question": "Quel pays a imposé la loi martiale en décembre 2024 ?",
       "answers": ["Singapour", "Thaïland", "Laos", "Corée du Sud"],

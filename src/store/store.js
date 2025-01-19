@@ -10,7 +10,7 @@ export const useUserStore = defineStore('userStore', {
     actions: {
         // WebSocket connection
         connectWebSocket() {
-            this.socket = new WebSocket(`ws://192.168.1.109:${import.meta.env.VITE_PORT_WS}/`);
+            this.socket = new WebSocket(`ws://192.168.1.142:${import.meta.env.VITE_PORT_WS}/`);
 
             // WebSocket event listeners
 
@@ -29,12 +29,15 @@ export const useUserStore = defineStore('userStore', {
                         this.users = this.users.filter(u => u.id !== data.id);
                         break;
                     case 'userAnswer':
+                        if(data.userId==="0") {
+                            this.userResponses={}
+                        }else{
+                            this.userResponses[data.userId] = true;
+                        }
                         console.log('User answered:', data.userId);
                         break;
                 }
-                if (data.type === 'userAnswer') {
-                    this.userResponses[data.userId] = true;  // Marque l'utilisateur comme ayant répondu
-                }
+
             };
 
             this.socket.onclose = () => {

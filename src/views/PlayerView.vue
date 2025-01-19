@@ -1,9 +1,9 @@
 <template >
     <logout-button  />
 
-  <h1>{{ (user.name).toUpperCase() }}</h1>
+  <h1>{{ user.name.toUpperCase() }}</h1>
 
-  <div id="question">
+  <div id="question" :style="{ borderColor: categoryBorderColor }">
       <div >
         <question-section />
       </div>
@@ -17,20 +17,17 @@
       import { useUserStore } from '../store/store';
       import questionSection from "../components/questionSection.vue";
       import LogoutButton from "../components/logoutButton.vue";
-
       export default {
         components: {
           LogoutButton,
           questionSection,
-
-      },
-
+        },
         computed: {
           user() {
             const userId = this.$route.params.id;
             const userStore = useUserStore();
             return userStore.users.find((u) => u.id === userId);
-          },
+          }
         },
         created() {
           const userStore = useUserStore();

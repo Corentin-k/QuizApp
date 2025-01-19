@@ -2,7 +2,9 @@
   <div  id="Question">
 
 
-    <h1>Quiz</h1>
+    <h1 v-if="currentQuestion" :style="{ color: categoryColor }">Question</h1>
+    <h1 v-else >Question</h1>
+
     <div v-if="sessionActive || isAdmin">
       <!-- Section principale des questions -->
       <div v-if="currentQuestion">
@@ -38,6 +40,7 @@
               placeholder="Votre réponse ici"
               :disabled="!canAnswer"
           />
+          <br/>
           <button @click="submitAnswer(userAnswer)" :disabled="!canAnswer">
             Soumettre
           </button>
@@ -72,12 +75,12 @@
   <div v-if="isAdmin">
     <div v-if="currentQuestion && currentQuestion.type === 'song'">
       <button @click="playSong" :disabled="isPlaying">Jouer la musique</button>
-      <button @click="pauseSong" :disabled="!isPlaying">Pause</button>
+      <button @click="pauseSong" :disabled="!isPlaying" >Pause</button>
       <button @click="stopSong">Arrêter</button>
     </div>
 
 
-
+    <div id="barre"></div>
     <button @click="fetchNextQuestion">Prochaine question</button>
     <button @click="startQuiz" :disabled="sessionActive">Démarrer le quiz</button>
     <button @click="stopAnswering">Arrêter de répondre</button>
@@ -135,7 +138,23 @@ export default {
     correctAnswer(){
       return this.questionStore.isCorrectAnswer;
     },
+    isPlaying(){
+      return this.questionStore.isPlaying;
+    },
+    categoryColor() {
+      // Mappe les catégories aux couleurs
+      const categoryColors = {
+        geo: "blue",
+        music: "purple",
+        histoire: "brown",
+        science: "green",
+        politique: "red",
+        cinéma: "yellow",
+        sport:"orange",
+      };
+      return categoryColors[this.currentQuestion.category] || "black";
 
+    }
   },
   methods: {
     useUserStore,
@@ -214,41 +233,73 @@ beforeDestroy() {
 </script>
 
 <style scoped>
-input,
-button {
+input, button {
   margin: 10px;
   width: 250px;
   height: 50px;
   text-align: center;
+  border-radius: 8px;
+  transition: all 0.3s ease;
 }
 
-.showAnswer{
+button:hover:not(:disabled) {
+  background-color: #116bc6;
+  transform: scale(1.1);
+}
+
+button:disabled {
+  background-color: #93aadc;
+  color: #666666;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.showAnswer {
   position: inherit;
   margin-top: 50px;
   font-size: 50px;
-  color :#3dd68c;
+  color: #3dd68c;
+  animation: fadeIn 1s ease-out;
 }
 
-#TableScore{
+#TableScore {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-#TableScore th{
+
+#TableScore th {
   color: #3dd68c;
   font-size: 20px;
 }
-#TableScore thead{
+
+#TableScore td {
+  padding: 10px;
+}
+
+
+
+#loose {
+  color: red;
+
+}
+
+#barre {
   width: 100%;
-  align-items: center;
-  justify-content: center;
-  display: flex;
+  border: 1px solid #2581d2;
+  margin: 20px 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 
-#loose{
-  color:red;
 
-}
 </style>

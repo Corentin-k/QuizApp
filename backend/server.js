@@ -62,6 +62,11 @@ wsServer.on("connection", (ws) => {
         }
         if (parsedMessage.type === "userAnswer") {
             const { userId, answer } = parsedMessage;
+            if(userId===0) {
+               userResponses={}
+                broadcast({ type: "userAnswer", userId:"0" });
+            }else{
+
 
             userResponses[userId] = true;
 
@@ -75,7 +80,7 @@ wsServer.on("connection", (ws) => {
             if (Object.keys(userResponses).length === totalUsers) {
                 console.log("Tous les utilisateurs ont répondu !");
 
-            }
+            }}
         }
 
         if (parsedMessage.type === "adminCommand") {
@@ -90,6 +95,7 @@ wsServer.on("connection", (ws) => {
                     currentQuestion = parsedMessage.data;
 
                     userResponses = {};
+                    broadcast({ type: "userAnswer",userId:"0"  });
 
                     broadcast({ type: "question", data: currentQuestion });
                     break;

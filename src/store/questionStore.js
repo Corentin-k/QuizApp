@@ -15,7 +15,7 @@ export const useQuestionStore = defineStore("questionStore", {
     }),
     actions: {
         initWebSocket() {
-            this.ws = new WebSocket(`ws://192.168.1.109:${import.meta.env.VITE_PORT_WS}`);
+            this.ws = new WebSocket(`ws://192.168.1.142:${import.meta.env.VITE_PORT_WS}`);
             this.ws.onopen = () => {
 
                 const user = JSON.parse(localStorage.getItem('user'));
@@ -54,9 +54,9 @@ export const useQuestionStore = defineStore("questionStore", {
                         break;
 
                     case  "stopQuestion":
-
                         this.canAnswer=false;
                         break;
+
                     case "UPDATE_SCORE":
 
                         break;
@@ -150,7 +150,8 @@ export const useQuestionStore = defineStore("questionStore", {
             });
         },
         playSong() {
-            if (this.songPlayer) {
+            if (this.songPlayer){
+                this.stopSong();
                 this.songPlayer.play();
                 this.isPlaying = true;
             }
