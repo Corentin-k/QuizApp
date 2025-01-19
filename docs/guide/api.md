@@ -1,148 +1,151 @@
 ---
-outline: deep
+    outline: deep
 ---
 
 # API Documentation
 
-This page demonstrates the usage of the backend API for managing users and interacting with the WebSocket server.
-
-The API includes HTTP routes for creating, fetching, updating, and deleting users, along with a WebSocket server for real-time communication.
+This documentation outlines the REST API and WebSocket functionality for the quiz application. The backend is built using **Node.js**, **Express**, and **WebSocket**, enabling real-time communication and user interaction.
 
 ## Server Overview
 
-The server is built with Express and includes a WebSocket server for broadcasting updates. The server listens on two ports:
+The server is built with Express and includes a WebSocket server for broadcasting updates. It listens on the following ports:
 
-- **HTTP Server** on port `8081` for REST API endpoints.
-- **WebSocket Server** on port `8082` for real-time data broadcasting.
+- **HTTP Server**: Port `8081` for REST API endpoints.
+- **WebSocket Server**: Port `8082` for real-time communication.
 
-### CORS Configuration
-
-CORS is configured to allow requests from specific origins (e.g., the front-end application running on `localhost:5175`):
-
-```javascript
-const allowedOrigins = ['http://localhost:5175', 'http://10.3.202.11:5175'];
-
-app.use(cors({
-    origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Non autorisé par CORS'));
-        }
-    },
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-}));
-```
+---
 
 ## WebSocket Server
 
-The WebSocket server broadcasts real-time updates to connected clients. When users are created, deleted, or their scores are updated, the changes are broadcasted.
+The WebSocket server facilitates real-time updates for connected clients. It broadcasts changes such as user creation, deletion, or score updates.
 
 ### WebSocket Events
 
-- **user_created**: Sent when a new user is created.
-- **user_deleted**: Sent when a user is deleted.
-- **UPDATE_SCORE**: Sent when a user's score is incremented.
+- **user_created**: Triggered when a new user is created.
+- **user_deleted**: Triggered when a user is deleted.
+- **UPDATE_SCORE**: Triggered when a user's score is updated.
 
+#### Example WebSocket Handler
 ```javascript
 ws.on('connection', (ws) => {
     connectedClients.push(ws);
-    ws.on('message', (message) => { console.log('WebSocket message received:', message); });
-    ws.on('close', () => { connectedClients = connectedClients.filter(client => client !== ws); });
+
+    ws.on('message', (message) => {
+        console.log('WebSocket message received:', message);
+    });
+
+    ws.on('close', () => {
+        connectedClients = connectedClients.filter(client => client !== ws);
+    });
 });
 ```
 
-## Routes API REST
+---
 
+## REST API Routes
 
-This documentation describes the different routes of the API used in the quiz system.
+Below is the list of REST API endpoints provided by the server.
 
-## /users
+### **/users**
 
-### POST /users {#post-users}
+#### POST `/users` {#post-users}
 Create a new user.
 
-#### Parameters
-- `username` (string): The username (required).
-- `password` (string): The password (required).
+**Parameters:**
+- `username` (string, required): The user's username.
+- `password` (string, required): The user's password.
 
-#### Responses
+**Responses:**
 - **201**: User created successfully.
-- **400**: Missing values.
+- **400**: Missing required parameters.
 - **409**: User already exists.
 
-### GET /users {#get-users}
-Retrieve all users (admin-only access).
+---
 
-#### Parameters
-- `page` (integer): The page number (optional).
-- `limit` (integer): The number of items to return per page (optional).
+#### GET `/users` {#get-users}
+Retrieve a list of all users (admin-only access).
 
-#### Response
+**Query Parameters (optional):**
+- `page` (integer): The page number.
+- `limit` (integer): The number of items per page.
+
+**Responses:**
 - **200**: List of users.
 
-### GET /users/{id} {#get-users-id}
-Retrieve user details by their ID.
+---
 
-#### Responses
+#### GET `/users/{id}` {#get-users-id}
+Retrieve details of a user by their ID.
+
+**Responses:**
 - **200**: User details.
 - **404**: User not found.
 
-### DELETE /users/{id} {#delete-users-id}
+---
+
+#### DELETE `/users/{id}` {#delete-users-id}
 Delete a user by their ID.
 
-#### Responses
+**Responses:**
 - **204**: User deleted successfully.
 - **403**: Unauthorized access.
 
-### POST /users/login {#post-users-login}
+---
+
+#### POST `/users/login` {#post-users-login}
 Authenticate the user and return a token.
 
-#### Parameters
-- `username` (string): The username (required).
-- `password` (string): The password (required).
+**Parameters:**
+- `username` (string, required): The username.
+- `password` (string, required): The password.
 
-#### Responses
-- **200**: Login successful, returns a token.
+**Responses:**
+- **200**: Login successful (returns a token).
 - **401**: Invalid credentials.
 
 ---
 
-## /questions
+### **/questions**
 
-### GET /questions {#get-questions}
+#### GET `/questions` {#get-questions}
 Retrieve all questions.
 
-#### Parameters
-- `page` (integer): The page number (optional).
-- `limit` (integer): The number of questions to return (optional).
+**Query Parameters (optional):**
+- `page` (integer): The page number.
+- `limit` (integer): The number of questions to return.
 
-### GET /questions/{id} {#get-questions-id}
-Retrieve a question by its ID.
-
-#### Response
-- **200**: Question details.
-
-### GET /questions/category/{category} {#get-questions-category}
-Retrieve questions by category.
-
-#### Parameters
-- `category` (string): The category of the question (required).
-
-#### Response
-- **200**: List of questions matching the category.
+**Responses:**
+- **200**: List of questions.
 
 ---
 
-## /leaderboard
+#### GET `/questions/{id}` {#get-questions-id}
+Retrieve a specific question by its ID.
 
-### GET /leaderboard {#get-leaderboard}
-Retrieve the leaderboard.
+**Responses:**
+- **200**: Question details.
+- **404**: Question not found.
 
-#### Parameters
-- `limit` (integer): The number of items to return (optional).
-- `category` (string): The category of questions to filter the leaderboard (optional).
+---
 
-#### Response
-- **200**: Leaderboard details.
+#### GET `/questions/category/{category}` {#get-questions-category}
+Retrieve questions by category.
+
+**Parameters:**
+- `category` (string, required): The category of the questions.
+
+**Responses:**
+- **200**: List of questions in the specified category.
+- **404**: No questions found in the category.
+
+---
+
+
+
+
+
+
+
+
+
+

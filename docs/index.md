@@ -21,18 +21,22 @@ hero:
       link: https://github.com/Corentin-k/QuizApp
 
 features:
-  - icon: 🛠️
-    title: Admin View
-    details: "Manage users, questions, and view live responses effortlessly."
-  - icon: ✨
-    title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-  - icon: 🔒
-    title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-  - icon: 🌍
-    title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  - icon: 🌿
+    title: Pinia Store Management
+    details: "Utilized Pinia for efficient state management, ensuring seamless data flow and reactivity across the application."
+  - icon: ⚡
+    title: Real-Time Updates
+    details: "Stay updated with live score tracking, quiz progress, and user activity using WebSocket technology."
+
+  - icon: 🌐
+    title: RESTful API
+    details: "Access a robust REST API to interact with the backend for user, question, and score management."
+
+
+  - icon: 📂
+    title: JSON-based Questions
+    details: "Easily manage and load quiz questions from a JSON file for simplicity and scalability."
+
 ---
 
 # Welcome to Quiz App
