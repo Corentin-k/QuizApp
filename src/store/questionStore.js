@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-
+import { Howl } from "howler";
 export const useQuestionStore = defineStore("questionStore", {
     state: () => ({
         ws: null, // Instance WebSocket
@@ -10,7 +10,8 @@ export const useQuestionStore = defineStore("questionStore", {
         isAdmin: false, // L'utilisateur est administrateur
         sessionActive: false, // Le quiz est actif
         isCorrectAnswer:false,
-
+        songPlayer: null,
+        isPlaying: false,
     }),
     actions: {
         initWebSocket() {
@@ -89,6 +90,9 @@ export const useQuestionStore = defineStore("questionStore", {
 
         fetchNextQuestion() {
             if (this.questions.length > 0) {
+                if (this.songPlayer && this.isPlaying) {
+                    this.stopSong();
+                }
                 const nextQuestion = this.questions.shift();
                 this.currentQuestion = nextQuestion;
 
@@ -102,6 +106,10 @@ export const useQuestionStore = defineStore("questionStore", {
 
         stopAnswering() {
             if (this.isAdmin) {
+                if (this.songPlayer && this.isPlaying) {
+                    this.stopSong();
+                }
+
                 this.ws.send(JSON.stringify({ type: "adminCommand", command: "stopQuestion" }));
 
             }
@@ -119,10 +127,48 @@ export const useQuestionStore = defineStore("questionStore", {
         },
 
         updateQuestion(question) {
+            if (this.songPlayer && this.isPlaying) {
+                this.stopSong();
+            }
             this.currentQuestion = question;
             this.canAnswer = true;
+            if (question.type === "song") {
+                this.initSongPlayer(question.songUrl);
+            }
+        },
+        initSongPlayer(songUrl) {
+            if (this.songPlayer) {
+                this.songPlayer.unload();
+            }
+            this.songPlayer = new Howl({
+                src: [songUrl],
+                html5: true,
+                onend: () => {
+                    console.log("La musique est terminée.");
+                    this.isPlaying = false;
+                },
+            });
+        },
+        playSong() {
+            if (this.songPlayer) {
+                this.songPlayer.play();
+                this.isPlaying = true;
+            }
         },
 
+        pauseSong() {
+            if (this.songPlayer) {
+                this.songPlayer.pause();
+                this.isPlaying = false;
+            }
+        },
+
+        stopSong() {
+            if (this.songPlayer) {
+                this.songPlayer.stop();
+                this.isPlaying = false;
+            }
+        },
         // Vérifier le statut de l'utilisateur et définir son rôle
         fetchUser() {
             const user = JSON.parse(localStorage.getItem("user"));

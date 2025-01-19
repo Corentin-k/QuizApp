@@ -1,7 +1,7 @@
-<template>
+<template >
     <logout-button  />
 
-  <h1>{{ user.name.toUpperCase() }}</h1>
+  <h1>{{ (user.name).toUpperCase() }}</h1>
 
   <div id="question">
       <div >

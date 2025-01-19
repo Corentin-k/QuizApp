@@ -1,8 +1,10 @@
 <template>
   <div  id="Question">
+
+
     <h1>Quiz</h1>
     <div v-if="sessionActive || isAdmin">
-    <!-- Section principale des questions -->
+      <!-- Section principale des questions -->
       <div v-if="currentQuestion">
         <h2>{{ currentQuestion.question }}</h2>
 
@@ -30,7 +32,6 @@
         </div>
 
         <div v-else-if="currentQuestion.type === 'song'">
-          <audio :src="currentQuestion.audioUrl" controls></audio>
           <input
               type="text"
               v-model="userAnswer"
@@ -54,6 +55,8 @@
 
       </div>
     </div>
+
+
     <p v-if="!sessionActive">Chargement des questions...</p>
 
 
@@ -67,6 +70,14 @@
     </div>
   </div>
   <div v-if="isAdmin">
+    <div v-if="currentQuestion && currentQuestion.type === 'song'">
+      <button @click="playSong" :disabled="isPlaying">Jouer la musique</button>
+      <button @click="pauseSong" :disabled="!isPlaying">Pause</button>
+      <button @click="stopSong">Arrêter</button>
+    </div>
+
+
+
     <button @click="fetchNextQuestion">Prochaine question</button>
     <button @click="startQuiz" :disabled="sessionActive">Démarrer le quiz</button>
     <button @click="stopAnswering">Arrêter de répondre</button>
@@ -76,18 +87,18 @@
   <div v-if="!sessionActive" >
     <h2>Score</h2>
     <div id="TableScore">
-    <table>
-      <thead>
-      <tr>
-        <th>Name</th>
-        <th>Score</th>
-      </tr>
-      </thead>
-      <tr v-for="user in useUserStore().users" :key="user.id">
-        <td>{{ user.name }}</td>
-        <td>{{ user.score }}</td>
-      </tr>
-    </table>
+      <table>
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Score</th>
+        </tr>
+        </thead>
+        <tr v-for="user in useUserStore().users" :key="user.id">
+          <td>{{ user.name }}</td>
+          <td>{{ user.score }}</td>
+        </tr>
+      </table>
     </div>
   </div>
 
@@ -99,11 +110,13 @@ import { useQuestionStore } from "../store/questionStore";
 import axios from "axios";
 import {useUserStore} from "../store/store";
 
+
 export default {
   name: "Quiz",
   data() {
     return {
       userAnswer: "",
+
     };
   },
   computed: {
@@ -127,6 +140,17 @@ export default {
   methods: {
     useUserStore,
 
+    playSong() {
+      this.questionStore.playSong();
+    },
+    pauseSong() {
+      this.questionStore.pauseSong();
+    },
+    stopSong() {
+      this.questionStore.stopSong();
+    },
+
+
     async initQuiz() {
       await this.questionStore.fetchUser();
       this.questionStore.initWebSocket();
@@ -142,6 +166,7 @@ export default {
     fetchNextQuestion() {
       this.questionStore.fetchNextQuestion();
 
+
     },
     // Soumettre une réponse
     submitAnswer(answer) {
@@ -153,7 +178,7 @@ export default {
 
 
       if(!this.questionStore.isAdmin && (
-        (answer === this.currentQuestion.correct_answer))
+          (answer === this.currentQuestion.correct_answer))
       ){
         axios.put(`/users/${id}/increment`);
         console.log("incremented");
@@ -174,10 +199,17 @@ export default {
       this.questionStore.stopQuiz();
     },
   },
+
+
   created() {
     this.questionStore = useQuestionStore();
     this.initQuiz();
   },
+beforeDestroy() {
+  if (this.currentSong) {
+    this.currentSong.unload(); // Libère les ressources utilisées par Howler
+  }
+},
 };
 </script>
 
